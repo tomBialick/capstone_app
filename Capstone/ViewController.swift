@@ -49,8 +49,8 @@ class ViewController: UIViewController {
             thetaY = m_data.magneticField.y
             thetaZ = m_data.magneticField.z
             
-            altimeter.startRelativeAltitudeUpdates(to: OperationQueue.main, withHandler: { (altitudeData:CMAltitudeData?, error:Error?) in
-            
+            self.altimeter.startRelativeAltitudeUpdates(to: OperationQueue.main, withHandler: { (altitudeData:CMAltitudeData?, error:Error?) in
+                
                 self.altitude = Double(altitudeData!.relativeAltitude.floatValue)
             })
             var waveChoice = "sine"
