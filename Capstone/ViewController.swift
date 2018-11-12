@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  Capstone
 //
-//  Created by Stuti Patel on 10/11/18.
-//  Copyright © 2018 Stuti Patel. All rights reserved.
+//  Created by Thomas Bialick on 10/11/18.
+//  Copyright © 2018 Thomas Bialick. All rights reserved.
 //
 
 import UIKit
