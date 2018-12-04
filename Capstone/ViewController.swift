@@ -13,6 +13,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var wavePicker: UISegmentedControl!
     @IBOutlet weak var phonePicker: UISegmentedControl!
+    @IBOutlet weak var playButton: UIButton!
     
     let motionManager = CMMotionManager()
     var timer: Timer!
@@ -26,6 +27,7 @@ class ViewController: UIViewController {
     var thetaY = 0.0
     var thetaZ = 0.0
     var altitude = 0.0
+    var playButtonHeld = 0
     
     lazy var altimeter = CMAltimeter()
     
@@ -38,7 +40,23 @@ class ViewController: UIViewController {
         motionManager.startDeviceMotionUpdates()
         
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
+        
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longTap))
+        playButton.addGestureRecognizer(longGesture)
+        
     }
+    
+    @objc func longTap(sender : UIGestureRecognizer){
+        if sender.state == .ended {
+            print("UIGestureRecognizerStateEnded")
+            playButtonHeld = 0
+        }
+        else if sender.state == .began {
+            print("UIGestureRecognizerStateBegan.")
+            playButtonHeld = 1
+        }
+    }
+    
     @objc func update() {
         if let g_data = motionManager.gyroData, let m_data = motionManager.magnetometerData {
             
@@ -83,8 +101,7 @@ class ViewController: UIViewController {
                 phoneChoice = "0"
                 break
             }
-            
-            let parameters = ["phone": phoneChoice, "wave": waveChoice, "gx": String(gyroX), "gy": String(gyroY), "gz": String(gyroZ), "tx": String(thetaX), "ty": String(thetaY), "tz": String(thetaZ), "altitude": "\(altitude)"]
+            let parameters = ["phone": phoneChoice, "wave": waveChoice, "gx": String(gyroX), "gy": String(gyroY), "gz": String(gyroZ), "tx": String(thetaX), "ty": String(thetaY), "tz": String(thetaZ), "altitude": "\(altitude)", "held":"\(playButtonHeld)"]
             //create the url with URL
             let url = URL(string: "http://5halfcap.ngrok.io/phone")!
             
